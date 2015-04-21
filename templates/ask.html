@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block main  %}
+<h1>New question</h1><br>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+
+<form class="form-horizontal">
+  <div class="control-group">
+    <label class="control-label" for="inputTitle">Title</label>
+    <div class="controls">
+      <input class="span5" type="text" id="inputTitle" placeholder="Title">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label for="inputText">Text</label>
+    <div class="controls">
+      <textarea class="span5" rows="12" placeholder="Text"></textarea>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="inputTags">Tags</label>
+    <div class="controls">
+      <input class="span5" type="text" id="inputTitle" placeholder="Tags">
+    </div>
+  </div>
+  <div class="control-group">
+  <div class="controls">
+    <button class="btn btn-primary btn-block" style=" max-width: 100px;" type="submit">Ask!</button>
+  </div>
+  </div>
+</form>
+{% endblock  %}
+

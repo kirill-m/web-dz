@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block main  %}
+	<h1>Main page</h1>
+                {% for question in questions %}
+                   <div class="question">
+                     <div class="question__left">
+			<a class="rateup" href="#"><i class="icon-chevron-up"></i></a>	
+                        <img src="/media/std_avatar_90-90.jpg" class="img-rounded">
+			<a class="ratedown1" href="#"><i class="icon-chevron-down"></i></a>
+			<span class="rating"><b>Rating: </b>100</span>
+                     </div>
+                     <div class="question__right">
+                       <h4><a class="question__title" href="{% url "question" question.id %}">{{ question.title }}</a></h4>
+                       <p class="question__text">{{ question.content }}</p>
+                       <a class="question__comment" href="{% url "question" question.id %}">Comments (3)</a> 
+		       <span class="question__tags-title"><b>Tags:</b></span>
+			{% for tags in question.tags %}
+			<a class="question__tags btn btn-primary btn-small disabled" href="#">{{ tags }}</a>
+			{% endfor %}
+			<span class="question__date"><b>Date: </b>{{ question.created|date:"d.m.Y" }}</span>
+                     </div>
+                   </div>
+                {% endfor %}
+                <br style="clear: both"/>
+                <div class="pagination" id="pager">
+                  <ul>
+                    <li><a href="#">Prev</a></li>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li><a href="#">Next</a></li>
+                  </ul>
+                </div>
+<form method="post" action="{% url "add"  %}">
+          {% csrf_token  %}
+          <input type="text" name="text">
+          <input type="submit">
+        </form>
+
+{% endblock  %}

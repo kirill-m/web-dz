@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ask_Kir</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/mystyle.css"/>
+    <script src="http://code.jquery.com/jquery.js"></script> 
+ </head>
+  <body>
+       <div class="container">
+	   <div class="navbar navbar-inverse">
+	     <div class="navbar-inner">
+     	       <div class="container">
+                 <a class="brand" href="http://ask-kir.ru"><strong>Ask-Kir</strong></a>
+    		 <ul class="nav">
+      		 <li class="divider-vertical"></li>
+		 <a class="btn btn-success " style=" margin-left: 310px;" href="/ask">ASK!</a>
+      		 </ul>
+  		  <form class="navbar-search pull-right">
+  		    <input type="text" class="search-query" placeholder="Search">
+                    <a class="btn  btn-link" href="/login"><i class="icon-user icon-white"></i>Log In</a>
+                    <a class="btn btn-link" href="/register">Register</a>
+		  </form> 
+             </div>
+  	  </div>
+	</div>
+	    <div class="row">
+              <div class="span8" id="maincol" >
+		{% block main%}
+		{% endblock %}
+              </div>
+              <div class="span4" id="rightcol">
+		  <h3> Popular tags </h3>
+                  <ul>
+		     <li>Perl</li>
+		     <li>HTML</li>
+		     <li>Oldschool</li>
+		   </ul>
+		  <h3> Popular authors </h3>
+		  <ul>
+                     <li>Perl</li>
+                     <li>HTML</li>
+                     <li>Oldschool</li>
+		  </ul>	
+	      </div>
+           </div>
+	</div>   
+  </body>
+</html>

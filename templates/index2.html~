@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block main  %}
+<h1>Main page</h1>
+                {% for i in "qweasd" %}
+                   <div class="question">
+                     <div class="question__left">
+                        <img src="http://lorempixel.com/90/90/" class="img-circle">
+                     </div>
+                     <div class="question__right">
+                       <h5><a href="/">Question</a></h5>
+                       <p>Lorem pixel color sit amet</p>
+                       <a href="">Comment</a> Tags: a, b, c ,d
+                     </div>
+                   </div>
+                {% endfor %}
+                <br style="clear: both"/>
+                <div class="pagination" id="pager">
+                  <ul>
+                    <li><a href="#">Prev</a></li>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li><a href="#">Next</a></li>
+                  </ul>
+                </div>
+{% endblock  %}

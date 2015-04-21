@@ -1,0 +1,47 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+def index(request):
+	return render(request, 'index2.html', ())	
+
+def register(request):
+	return render(request, 'register.html', ())
+
+def login(request):
+	return render(request, 'login.html', ());
+
+def ask(request):
+        return render(request, 'ask.html', ());
+
+def test(request):
+	try:
+	    page = int(request.GET.get('page', ''))
+	except ValueError:
+	    page = 1;
+	data = {
+	     'query': request.GET.get('query'),
+	     'page': page,
+	}
+	return HttpResponse(json.dumps(data), content_type='application/json')
+#def hello_world(request):
+#	return render(request, 'hello_world.html', ())
+
+@csrf_exempt
+def hello_world(request):
+    result = ['<h1> Hello, world! (django) </h1>']
+    result.append('Post test:')
+    result.append('<form method="post">')
+    result.append('<input type="text" name = "test">')
+    result.append('<input type="submit" value="Submit">')
+    result.append('</form>')
+    if request.method == 'GET':
+        if request.GET.urlencode() != '':
+            result.append('Get data:')
+        result.append(request.GET.urlencode())
+    if request.method == 'POST':
+	result.append('Post data:')
+        result.append(request.POST.urlencode())
+    return HttpResponse('<br>'.join(result))
+
