@@ -6,31 +6,35 @@
                         <a class="rateup" href="#"><i class="icon-chevron-up"></i></a>
                         <img src="/media/std_avatar_90-90.jpg" class="img-rounded">
                         <a class="ratedown1" href="#"><i class="icon-chevron-down"></i></a>
-                        <span class="rating"><b>Rating: </b>100</span>  
+                        <span class="rating"><b>Rating: </b>{{ question.rating }}</span>  
                      </div>
                      <div class="question__right">
-                       <h4>How to build a moonpark?</h4>
-                      <div class="well"> <p class="question__text">CONTENT</p></div>
+                       <h4>{{ question.title }}</h4>
+                      <div class="well"><p class="question__text">{{ question.text  }}</p></div>
                        <span class="question__tags-title"><b>Tags:</b></span>
-                        <a class="question__tags btn btn-primary btn-small disabled" href="#">test_tag</a>
-                        <span class="question__date"><b>Date: </b>dd.mm.YYYY</span>
+			 {% for tags in question.tags_set.all %}
+                        <a class="question__tags btn btn-primary btn-small disabled" href="#">{{ tags  }}</a>
+			{% endfor %}
+                        <span class="question__date"><b>Date: </b>{{ question.created|date:"d.m.Y" }}</span>
                      </div>
                    </div>
 		<br style="clear: both"/>
 		<div class=row">
+		   {% for answer in question.answer_set.all %}
 		   <div class="answer">
                      <div class="answer__left">
                         <a class="rateup" href="#"><i class="icon-chevron-up"></i></a>
                         <img src="/media/std_avatar_90-90.jpg" class="img-rounded">
                         <a class="ratedown1" href="#"><i class="icon-chevron-down"></i></a>
-                        <span class="rating"><b>Rating: </b>100</span>
+                        <span class="rating"><b>Rating: </b>{{ answer.rating  }}</span>
                      </div>
                      <div class="answer__right">
-                       <p class="answer__text">Answer example</p>
+                       <p class="answer__text">{{ answer.text }}</p>
 			<input type="checkbox"> Correct
-                        <span class="question__date"><b>Date: </b>dd.mm.YYYY</span>
+                        <span class="question__date"><b>Date: </b>{{ answer.created|date:"d.m.Y" }}</span>
                      </div>
                    </div>
+		   {% endfor  %}
 		</div>
 		 <form method="post" action="{% url "add"  %}">
 		  {% csrf_token  %}

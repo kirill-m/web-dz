@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ask_kir',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -67,7 +68,7 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
 TEMPLATE_DIRS = (
-	BASE_DIR + '/../templates',
+	BASE_DIR + '/templates',
 	#'/home/kirill/ask_kir/templates',
 )
 
