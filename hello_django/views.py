@@ -3,14 +3,8 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 import json, datetime
-from hello_django.models import Question, Answer, Tags
+from hello_django.models import Question, Answer, Tags, User
 
-
-#def index(request):
-#	context = {
-#		'questions': Question.objects.popular()[:10]
-#	}
-#	return render(request, 'index2.html', context)	
 
 def question(request, pk):
     try:
@@ -38,6 +32,16 @@ def ask(request):
 def add(request):
 	return HttpResponse(request.POST.get('text'))
 
+def tags(request, tag ):
+	tag_get = request.GET.get('tag')
+	#tag_get1 = Tags.objects.get(name=tag_get)
+	context = {
+	'questions' : Question.objects.popular()[:10],
+        'tags': Tags.objects.all(),
+	'tag_get' : Tags.objects.get(name=tag_get),
+	}
+	return render(request, 'tags.html', context)
+
 
 def test(request):
 	try:
@@ -49,6 +53,29 @@ def test(request):
 	     'page': page,
 	}
 	return HttpResponse(json.dumps(data), content_type='application/json')
+
+def index(request):
+    question_list = Question.objects.popular()[:10]
+    answers = Answer.objects.count()
+    sort = request.GET.get('sort')
+    if sort == '1':
+        question_list = Question.objects.popular()[:10]
+    elif sort == '2':
+        question_list = Question.objects.new()[:10]
+    paginator = Paginator(question, 6) # Show 6 contacts per page
+    page = request.GET.get('page')
+    #try:
+    #    questions = paginator.page(page)
+    #except PageNotAnInteger:
+    #    questions = paginator.page(1)
+    #except EmptyPage:
+    #    questions = paginator.page(paginator.num_pages)
+    context = {
+             'questions' : question_list,
+             'answers': answers,
+             'tags': Tags.objects.all(),
+    }
+    return render(request, 'index2.html', context)
 
 @csrf_exempt
 def hello_world(request):
@@ -67,25 +94,3 @@ def hello_world(request):
         result.append(request.POST.urlencode())
     return HttpResponse('<br>'.join(result))
 
-def index(request):
-    question_list = Question.objects.popular()[:10]
-    answers = Answer.objects.count()
-    sort = request.GET.get('sort')
-    if sort == '1':
-    	question_list = Question.objects.popular()[:10]
-    elif sort == '2':
-	question_list = Question.objects.new()[:10]
-    paginator = Paginator(question, 6) # Show 6 contacts per page
-    page = request.GET.get('page')
-    #try:
-    #    questions = paginator.page(page)
-    #except PageNotAnInteger:
-    #    questions = paginator.page(1)
-    #except EmptyPage:
-    #    questions = paginator.page(paginator.num_pages)
-    context = {
-             'questions' : question_list,
-             'answers': answers,
-             'tags': Tags.objects.all(),
-    }
-    return render(request, 'index2.html', context)

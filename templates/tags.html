@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block main  %}
+           <div class="span3"><h1>Tags: {{ tag_get  }}</h1></div>
+	   <input type="text" class="search-query" placeholder="Search by tags" style="float: right;  margin-top: 15px;">
+	      {% for question in tag_get.question.all %}
+                   <div class="question">
+                     <div class="question__left">
+                        <a class="rateup" href="#"><i class="icon-chevron-up"></i></a>
+                        <img src="/media/std_avatar_90-90.jpg" class="img-rounded">
+                        <a class="ratedown1" href="#"><i class="icon-chevron-down"></i></a>
+                        <span class="rating"><b>Rating: </b>{{ question.rating }}</span>
+                     </div>
+                     <div class="question__right">
+                       <h4><a class="question__title" href="{% url "question" question.id %}">{{ question }}</a></h4>
+                       <p class="question__text">{{ question.text }}</p>
+                       <a class="question__comment" href="{% url "question" question.id %}">Comments ({{ question.answer_set.count  }})</a>
+                       <span class="question__tags-title"><b>Tags:</b></span>
+                        {% for tags in question.tags_set.all %}
+                        <a class="question__tags btn btn-primary btn-small disabled" href="{% url "tags" %}?tag={{ tags  }}">{{ tags }}</a>
+                        {% endfor %}
+                        <span class="question__date"><b>Date: </b>{{ question.created|date:"d.m.Y" }}</span>
+                     </div>
+                   </div>
+                {% endfor %}
+
+
+
+{% endblock  %}
+

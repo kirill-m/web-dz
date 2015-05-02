@@ -26,7 +26,7 @@
                        <a class="question__comment" href="{% url "question" question.id %}">Comments ({{ question.answer_set.count  }})</a> 
 		       <span class="question__tags-title"><b>Tags:</b></span>
 			{% for tags in question.tags_set.all %}
-			<a class="question__tags btn btn-primary btn-small disabled" href="#">{{ tags }}</a>
+			<a class="question__tags btn btn-primary btn-small disabled" href="{% url "tags" %}?tag={{ tags  }}">{{ tags }}</a>
 			{% endfor %}
 			<span class="question__date"><b>Date: </b>{{ question.created|date:"d.m.Y" }}</span>
                      </div>

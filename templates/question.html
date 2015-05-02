@@ -13,7 +13,7 @@
                       <div class="well"><p class="question__text">{{ question.text  }}</p></div>
                        <span class="question__tags-title"><b>Tags:</b></span>
 			 {% for tags in question.tags_set.all %}
-                        <a class="question__tags btn btn-primary btn-small disabled" href="#">{{ tags  }}</a>
+                        <a class="question__tags btn btn-primary btn-small disabled" href="{% url "tags" %}?tag={{ tags  }}">{{ tags  }}</a>
 			{% endfor %}
                         <span class="question__date"><b>Date: </b>{{ question.created|date:"d.m.Y" }}</span>
                      </div>
@@ -26,7 +26,7 @@
                         <a class="rateup" href="#"><i class="icon-chevron-up"></i></a>
                         <img src="/media/std_avatar_90-90.jpg" class="img-rounded">
                         <a class="ratedown1" href="#"><i class="icon-chevron-down"></i></a>
-                        <span class="rating"><b>Rating: </b>{{ answer.rating  }}</span>
+                        <span class="rating"><b>Rating: </b>{{ answer.rating }}</span>
                      </div>
                      <div class="answer__right">
                        <p class="answer__text">{{ answer.text }}</p>

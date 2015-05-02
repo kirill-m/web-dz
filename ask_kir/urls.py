@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from hello_django.views import index, register, hello_world, login, ask, test, question, add
+from hello_django.views import index, register, hello_world, login, ask, test, question, add, tags
 
 urlpatterns = patterns('',
     # Examples:
@@ -16,5 +16,6 @@ urlpatterns = patterns('',
     url(r'^ask/$', ask, name='ask'),
     url(r'^question/(?P<pk>[0-9]+)?/?$', question, name='question'),
     url(r'^test/$', test, name='test'),
-    url(r'^add/$', add, name='add'),
+    url(r'^add/$', add, name='add'), 
+    url(r'^tags/(P<tag>)?$', tags, name='tags'),
 )
