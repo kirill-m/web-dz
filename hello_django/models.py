@@ -27,7 +27,6 @@ class Question(models.Model):
 	def __unicode__(self):
 		return self.title
 	objects = QuestionManager()
-	pass
 
 
 class Answer(models.Model):
