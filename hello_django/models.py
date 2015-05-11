@@ -10,12 +10,10 @@ class QuestionManager(models.Manager):
 
 
 class Profile(models.Model):
-	login = models.CharField(max_length=100, default='Login')
-	email = models.EmailField()
-	nickname = models.CharField(max_length=100, default='nickname')
-	password = models.CharField(max_length=100, default='password')
+	user = models.OneToOneField(User)
+	rating = models.IntegerField(default=0)
 	def __usincode__(self):
-		return self.login
+		return self.rating
 
 
 class Question(models.Model):

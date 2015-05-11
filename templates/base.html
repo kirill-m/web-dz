@@ -17,12 +17,17 @@
                  <a class="brand" href="http://ask-kir.ru"><img class="img-rounded" src="/media/mind.png" style="width:22px; height:22px; background-color:white;"/><strong style="margin-left:15px;">Ask-Kir</strong></a>
     		 <ul class="nav">
       		 <li class="divider-vertical"></li>
-		 <a class="btn btn-success" style="margin-left: 270px;" href="/ask">ASK!</a>
+		 <a class="btn btn-success" style="margin-left: 260px;" href="/ask">ASK!</a>
       		 </ul>
   		  <form class="navbar-search pull-right">
   		    <input type="text" class="search-query" placeholder="Search">
+		    {% if user.is_authenticated %}
+		    <img src="/media/std_avatar_90-90_clr.jpg" style="width:20px; height:20px;" >
+		    <a class="btn-logout btn-link" href="/logout">Logout ({{ user }})</a>
+		    {% else  %}
 		    <a class="btn-login btn-link"  href="/login"><i class="icon-user icon-white"></i>Log In</a>
 		    <a class="btn-register btn-link"  href="/register">Register</a>
+		    {% endif  %}
 		  </form>
                </div>
   	     </div>

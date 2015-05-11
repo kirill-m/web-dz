@@ -1,10 +1,10 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 import json, datetime
 from hello_django.models import Question, Answer, Tags, User
-
+from django.contrib import auth
 
 def question(request, pk):
     try:
@@ -17,14 +17,26 @@ def question(request, pk):
 	     'tags': Tags.objects.all(),
     }
     
-    return render_to_response('question.html', context,
-        content_type="text/html")
+    return render(request, 'question.html', context)
 
 def register(request):
 	return render(request, 'register.html', ())
 
 def login(request):
+	if request.POST:
+		username = request.POST.get('username')
+		password = request.POST.get('password')
+		user = auth.authenticate(username=username, password=password)
+		if user is not None:
+			auth.login(request, user)
+			return redirect('/')
+	else:
+		return render(request, 'login.html', {'login_error': True})
 	return render(request, 'login.html', ());
+
+def logout(request):
+	auth.logout(request)
+	return redirect('/')
 
 def ask(request):
         return render(request, 'ask.html', ());
@@ -34,13 +46,27 @@ def add(request):
 
 def tags(request, tag ):
 	tag_get = request.GET.get('tag')
-	#tag_get1 = Tags.objects.get(name=tag_get)
 	context = {
 	'questions' : Question.objects.popular()[:10],
         'tags': Tags.objects.all(),
 	'tag_get' : Tags.objects.get(name=tag_get),
 	}
 	return render(request, 'tags.html', context)
+
+def user (request, pk):
+	try:
+        	u = User.objects.get(id=pk)
+    	except User.DoesNotExist:
+        	raise Http404
+    	context = {
+             'user' : u,
+             'rating': 99,
+             'email': u.email,
+	     'first_name': u.first_name,
+	     'last_name': u.last_name,
+	     'questions': u.question_set.all(),
+    }
+	return render(request, 'user.html', context);
 
 
 def test(request):

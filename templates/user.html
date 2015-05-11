@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block main  %}
+	<h1>User: {{ user}}</h1>
+                   <div class="user__line">
+			<div class="span2">
+                        <img src="/media/std_avatar_90-90_clr.jpg" class="img-rounded">
+                        <a href="#"><span class="author">{{ profile.author }}</span></a>
+                        <br><span class="rating" style="margin-left:20px;"><b>Rating: </b>{{ profile.rating }}</span></br>
+                     </div>
+		   </div>
+		   <br><div class="list">
+			<div class="line"> Rating: {{ rating }}</div>
+			<div class="line"> First name: {{ first_name }}</div>
+			<div class="line"> Last name: {{ last_name }}</div>
+			<div class="line"> Email: {{ email }}</div>
+		   </div></br>
+		   <br><h3>All questions of {{user}}:</h3>
+		   {% for question in questions %}
+		     <hr>
+                     <p><a href="/question/{{ question.id  }}"><h4 class="line" style="margin-left:20px;">{{ question.title }}</h4></a></p>
+	           {% endfor  %}
+	           </br>
+
+{% endblock  %}
+

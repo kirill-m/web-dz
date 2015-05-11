@@ -8,17 +8,18 @@
                         <a class="rateup" href="#"><i class="icon-chevron-up"></i></a>
                         <img src="/media/std_avatar_90-90.jpg" class="img-rounded">
                         <a class="ratedown1" href="#"><i class="icon-chevron-down"></i></a>
-                        <span class="rating"><b>Rating: </b>{{ question.rating }}</span>
+			<a href="#"><span class="author">{{ question.author }}</span></a>
+                        <br><span class="rating" style="margin-left:20px"><b>Rating: </b>{{ question.rating }}</span></br>
                      </div>
                      <div class="question__right">
                        <h4><a class="question__title" href="{% url "question" question.id %}">{{ question }}</a></h4>
                        <p class="question__text">{{ question.text }}</p>
-                       <a class="question__comment" href="{% url "question" question.id %}">Comments ({{ question.answer_set.count  }})</a>
+                       <br><a class="question__comment" href="{% url "question" question.id %}">Comments ({{ question.answer_set.count  }})</a>
                        <span class="question__tags-title"><b>Tags:</b></span>
                         {% for tags in question.tags_set.all %}
                         <a class="question__tags btn btn-primary btn-small disabled" href="{% url "tags" %}?tag={{ tags  }}">{{ tags }}</a>
                         {% endfor %}
-                        <span class="question__date"><b>Date: </b>{{ question.created|date:"d.m.Y" }}</span>
+                        <span class="question__date"><b>Date: </b>{{ question.created|date:"d.m.Y" }}</span></br>
                      </div>
                    </div>
                 {% endfor %}
