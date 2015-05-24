@@ -3,7 +3,7 @@ from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 import json, datetime
-from hello_django.models import Question, Answer, Tags, User
+from hello_django.models import Question, Answer, Tags, User, Profile, QLike, ALike
 from django.contrib import auth
 
 def question(request, pk):
@@ -11,16 +11,115 @@ def question(request, pk):
 	q = Question.objects.get(id=pk)
     except Question.DoesNotExist:
 	raise Http404
+    id = request.GET.get('id')
+    vote = request.GET.get('vote')
+    user = request.GET.get('user')
+    if vote == 'up1':
+        q = Question.objects.get(id=id)
+        u = User.objects.get(id=user)
+        try:
+                QLike.objects.get(question_id=q.id, user_id=u.id)
+        except QLike.DoesNotExist:
+                ql = QLike(question_id=q.id, user_id=u.id, voted=1)
+                ql.save()
+                q.rating = q.rating + 1
+                q.save()
+        else:
+                ql = QLike.objects.get(question_id=q.id, user_id=u.id)
+                if ql.voted == 0:
+                        q.rating = q.rating + 1
+                        q.save()
+                        ql.voted = None
+                        ql.save()
+                elif ql.voted == None:
+                        q.rating = q.rating + 1
+                        q.save()
+                        ql.voted = 1
+                        ql.save()
+    elif vote == 'down1':
+        q = Question.objects.get(id=id)
+        u = User.objects.get(id=user)
+        try:
+                QLike.objects.get(question_id=q.id, user_id=u.id)
+        except QLike.DoesNotExist:
+                ql = QLike(question_id=q.id, user_id=u.id, voted=0)
+                ql.save()
+                q.rating = q.rating-1
+                q.save()
+        else:
+                ql = QLike.objects.get(question_id=q.id, user_id=u.id)
+                if ql.voted == 1:
+                        q.rating = q.rating - 1
+                        q.save()
+                        ql.voted = None
+                        ql.save()
+                elif ql.voted == None:
+                        q.rating = q.rating - 1
+                        q.save()
+                        ql.voted = 0
+                        ql.save()
+    if vote == 'up2':
+        a = Answer.objects.get(id=id)
+        u = User.objects.get(id=user)
+        try:
+                ALike.objects.get(answer_id=a.id, user_id=u.id)
+        except ALike.DoesNotExist:
+                al = ALike(answer_id=a.id, user_id=u.id, voted=1)
+                al.save()
+                a.rating = a.rating + 1
+                a.save()
+        else:
+                al = ALike.objects.get(answer_id=a.id, user_id=u.id)
+                if al.voted == 0:
+                        a.rating = a.rating + 1
+                        a.save()
+                        al.voted = None
+                        al.save()
+                elif al.voted == None:
+                        a.rating = a.rating + 1
+                        a.save()
+                        al.voted = 1
+                        al.save()
+    elif vote == 'down2':
+        a = Answer.objects.get(id=id)
+        u = User.objects.get(id=user)
+        try:
+                ALike.objects.get(answer_id=a.id, user_id=u.id)
+        except ALike.DoesNotExist:
+                al = ALike(answer_id=a.id, user_id=u.id, voted=0)
+                al.save()
+                a.rating = a.rating-1
+                a.save()
+        else:
+                al = ALike.objects.get(answer_id=a.id, user_id=u.id)
+                if al.voted == 1:
+                        a.rating = a.rating - 1
+                        a.save()
+                        al.voted = None
+                        al.save()
+                elif al.voted == None:
+                        a.rating = a.rating - 1
+                        a.save()
+                        al.voted = 0
+                        al.save()	
     context = {
 	     'question' : Question.objects.get(id=pk),
 	     'answers': Answer.objects.popular()[:10],
 	     'tags': Tags.objects.all(),
+	     'pk': pk,
     }
     
     return render(request, 'question.html', context)
 
 def register(request):
 	return render(request, 'register.html', ())
+
+def voted(request, tag):
+	rate = request.GET.get('tag')
+	if rate == 'up':
+		return redirect('/ask')
+	elif rate == 'down':
+		return redirect('/login')
 
 def login(request):
 	if request.POST:
@@ -59,8 +158,8 @@ def user (request, pk):
     	except User.DoesNotExist:
         	raise Http404
     	context = {
-             'user' : u,
-             'rating': 99,
+             'usr' : u,
+             'rating': u.profile.rating,
              'email': u.email,
 	     'first_name': u.first_name,
 	     'last_name': u.last_name,
@@ -88,18 +187,67 @@ def index(request):
         question_list = Question.objects.popular()[:10]
     elif sort == '2':
         question_list = Question.objects.new()[:10]
-    paginator = Paginator(question, 6) # Show 6 contacts per page
+    id = request.GET.get('id') 
+    vote = request.GET.get('vote')
+    user = request.GET.get('user')
+    if vote == 'up':
+	q = Question.objects.get(id=id)
+	u = User.objects.get(id=user)
+	try:
+		QLike.objects.get(question_id=q.id, user_id=u.id)
+	except QLike.DoesNotExist:
+		ql = QLike(question_id=q.id, user_id=u.id, voted=1)
+		ql.save()
+		q.rating = q.rating + 1
+		q.save()
+	else:
+		ql = QLike.objects.get(question_id=q.id, user_id=u.id)
+		if ql.voted == 0:
+			q.rating = q.rating + 1
+			q.save()
+			ql.voted = None
+			ql.save()
+		elif ql.voted == None:
+			q.rating = q.rating + 1
+                        q.save()
+                        ql.voted = 1
+                        ql.save()
+    elif vote == 'down':
+	q = Question.objects.get(id=id)
+	u = User.objects.get(id=user)
+	try:
+		QLike.objects.get(question_id=q.id, user_id=u.id)
+	except QLike.DoesNotExist:
+		ql = QLike(question_id=q.id, user_id=u.id, voted=0)
+                ql.save()
+		q.rating = q.rating-1
+		q.save()
+	else:
+		ql = QLike.objects.get(question_id=q.id, user_id=u.id)
+                if ql.voted == 1:
+                        q.rating = q.rating - 1
+                        q.save()
+			ql.voted = None
+    			ql.save()
+		elif ql.voted == None:
+			q.rating = q.rating - 1
+                        q.save()
+                        ql.voted = 0
+                        ql.save()
+    paginator = Paginator(question_list, 4) # Show 4 contacts per page
     page = request.GET.get('page')
-    #try:
-    #    questions = paginator.page(page)
-    #except PageNotAnInteger:
-    #    questions = paginator.page(1)
-    #except EmptyPage:
-    #    questions = paginator.page(paginator.num_pages)
+    try:
+        questions = paginator.page(page)
+    except PageNotAnInteger:
+        questions = paginator.page(1)
+    except EmptyPage:
+        questions = paginator.page(paginator.num_pages)
     context = {
-             'questions' : question_list,
+             #'questions' : question_list,
              'answers': answers,
              'tags': Tags.objects.all(),
+	     'likes': QLike.objects.all(),
+	     'questions': questions,
     }
     return render(request, 'index2.html', context)
 

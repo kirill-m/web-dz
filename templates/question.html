@@ -3,9 +3,21 @@
 	<h1>Question</h1>
                    <div class="question-page">
                      <div class="question__left">
-                        <a class="rateup" href="#"><i class="icon-chevron-up"></i></a>
+			{% if user.is_authenticated %}
+                        {% if question.author_id != user.id %}
+                        <a class="rateup" href="/question/{{pk}}?vote=up1&id={{question.id}}&user={{user.id}}"><i class="icon-chevron-up"></i></a>
                         <img src="/media/std_avatar_90-90.jpg" class="img-rounded">
-                        <a class="ratedown1" href="#"><i class="icon-chevron-down"></i></a>
+                        <a class="ratedown1" href="/question/{{pk}}?vote=down1&id={{question.id}}&user={{user.id}}"><i class="icon-chevron-down"></i></a>
+                        {% else %}
+                        <a class="rateup" href="/question/{{pk}}"><i class="icon-chevron-up"></i></a>
+                        <img src="/media/std_avatar_90-90.jpg" class="img-rounded">
+                        <a class="ratedown1" href="/question/{{pk}}"><i class="icon-chevron-down"></i></a>
+                        {% endif %}
+                        {% else %}
+                        <a class="rateup" href="/login"><i class="icon-chevron-up"></i></a>
+                        <img src="/media/std_avatar_90-90.jpg" class="img-rounded">
+                        <a class="ratedown1" href="/login"><i class="icon-chevron-down"></i></a>
+                        {% endif %}
 			<a href="/user/{{ question.author_id  }}"><span class="author">{{ question.author }}</span></a>
                         <br><span class="rating" style="margin-left:20px;"><b>Rating: </b>{{ question.rating }}</span></br>  
                      </div>
@@ -24,10 +36,22 @@
 		   {% for answer in question.answer_set.all %}
 		   <div class="answer">
                      <div class="answer__left">
-                        <a class="rateup" href="#"><i class="icon-chevron-up"></i></a>
+			{% if user.is_authenticated %}
+                        {% if answer.author_id != user.id %}
+                        <a class="rateup" href="/question/{{pk}}?vote=up2&id={{answer.id}}&user={{user.id}}"><i class="icon-chevron-up"></i></a>
                         <img src="/media/std_avatar_90-90.jpg" class="img-rounded">
-                        <a class="ratedown1" href="#"><i class="icon-chevron-down"></i></a>
-			<a href="/user/{{ answer.author_id }}"><span class="author">{{ answer.author }}</span></a>
+                        <a class="ratedown1" href="/question/{{pk}}?vote=down2&id={{answer.id}}&user={{user.id}}"><i class="icon-chevron-down"></i></a>
+                        {% else %}
+                        <a class="rateup" href="/question/{{pk}}"><i class="icon-chevron-up"></i></a>
+                        <img src="/media/std_avatar_90-90.jpg" class="img-rounded">
+                        <a class="ratedown1" href="/question/{{pk}}"><i class="icon-chevron-down"></i></a>
+                        {% endif %}
+                        {% else %}
+                        <a class="rateup" href="/login"><i class="icon-chevron-up"></i></a>
+                        <img src="/media/std_avatar_90-90.jpg" class="img-rounded">
+                        <a class="ratedown1" href="/login"><i class="icon-chevron-down"></i></a>
+                        {% endif %}
+			<a href="/user/{{ answer.author_id }}"><span class="author">  {{ answer.author }}</span></a>
                         <br><span class="rating" style="margin-left:20px;"><b>Rating: </b>{{ answer.rating }}</span></br>
                      </div>
                      <div class="answer__right">

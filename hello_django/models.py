@@ -12,7 +12,8 @@ class QuestionManager(models.Manager):
 class Profile(models.Model):
 	user = models.OneToOneField(User)
 	rating = models.IntegerField(default=0)
-	def __usincode__(self):
+	avatar = models.ImageField(upload_to="/home/kirill/ask_kir/static")
+	def __unicode__(self):
 		return self.rating
 
 
@@ -27,6 +28,14 @@ class Question(models.Model):
 	objects = QuestionManager()
 
 
+class QLike(models.Model):
+        voted = models.NullBooleanField(default=None)
+        user = models.OneToOneField(User)
+        question = models.ForeignKey(Question)
+        def __unicode__(self):
+               return self.user.username
+
+
 class Answer(models.Model):
 	author = models.ForeignKey(User)
         question = models.ForeignKey(Question)
@@ -38,8 +47,16 @@ class Answer(models.Model):
 	objects = QuestionManager()
 
 
+class ALike(models.Model):
+        voted = models.NullBooleanField(default=None)
+        user = models.OneToOneField(User)
+        answer = models.ForeignKey(Answer)
+        def __unicode__(self):
+               return self.user.username
+
 class Tags(models.Model):
         name = models.CharField(max_length=20, default="test_tag")
         question = models.ManyToManyField(Question)
         def __unicode__(self):
                 return self.name
+

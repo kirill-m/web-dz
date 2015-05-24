@@ -15,9 +15,21 @@
                 {% for question in questions %}
                    <div class="question">
                      <div class="question__left">
-			<a class="rateup" href="#"><i class="icon-chevron-up"></i></a>	
+			{% if user.is_authenticated %}
+			{% if question.author_id != user.id  %}
+			<a class="rateup" href="/?vote=up&id={{question.id}}&user={{user.id}}"><i class="icon-chevron-up"></i></a>	
                         <img src="/media/std_avatar_90-90.jpg" class="img-rounded">
-			<a class="ratedown1" href="#"><i class="icon-chevron-down"></i></a>
+			<a class="ratedown1" href="/?vote=down&id={{question.id}}&user={{user.id}}"><i class="icon-chevron-down"></i></a>
+			{% else %}
+			<a class="rateup" href="/"><i class="icon-chevron-up"></i></a>
+                        <img src="/media/std_avatar_90-90.jpg" class="img-rounded">
+                        <a class="ratedown1" href="/"><i class="icon-chevron-down"></i></a>
+			{% endif  %}
+			{% else %}
+			<a class="rateup" href="/login"><i class="icon-chevron-up"></i></a>
+                        <img src="/media/std_avatar_90-90.jpg" class="img-rounded">
+                        <a class="ratedown1" href="/login"><i class="icon-chevron-down"></i></a>
+			{% endif  %}
 			<a href="/user/{{ question.author_id }}"><span class="author">{{ question.author }}</span></a>
 			<br><span class="rating" style="margin-left: 20px;"><b>Rating: </b>{{ question.rating }}</span></br>
                      </div>
@@ -35,15 +47,17 @@
                 {% endfor %}
                 <br style="clear: both"/>
                 <div class="pagination" id="pager">
-                  <ul>
-                    <li><a href="#">Prev</a></li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">Next</a></li>
-                  </ul>
+		   <span class="step-links">
+        	      {% if questions.has_previous %}
+            		 <a href="?page={{ questions.previous_page_number }}">previous</a>
+        	      {% endif %}
+        	      <span class="current">
+            		  Page {{ questions.number }} of {{ questions.paginator.num_pages }}
+        	      </span>
+        	      {% if questions.has_next %}
+            		  <a href="?page={{ questions.next_page_number }}">next</a>
+        	      {% endif %}
+    		   </span>
                 </div>
 
 	<form method="post" action="{% url "add"  %}">
